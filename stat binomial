@@ -15,3 +15,25 @@ binom.pval = apply(count.matrix, 1, function(x){binom.test(x,p=0.875)$p.val})
 binom.fdr = p.adjust(binom.pval, method="fdr")
 write.table(data.frame(Name=gene.name, BinomTestPval=binom.pval, BinomTestFDR=binom.fdr),
             file="BinomTestResult_BC2_p_0.875.csv",sep=",",col.names=TRUE,row.names=FALSE,quote=FALSE)
+   
+#############################
+# Fisher exact test with FDR
+#############################
+x<-read.delim("clipboard",header=T)
+
+my.fisher.test.pval = function(x,n){
+  tryCatch({
+    tt = fisher.test(x)
+    return(tt$p.val)
+  }, error=function(e){return(NA)})# to exclude genes having all 0 read counts
+}
+p.Fisher = c()
+sum.cts = x
+for (i in 1:nrow(sum.cts)) {
+  p.Fisher[i] = my.fisher.test.pval(rbind(as.numeric(sum.cts[i,c("Abuab","Pacol")]),as.numeric(sum.cts[i,c("BC2Ab","BC2Pa")])))
+}
+
+p.FDR = p.adjust(p.Fisher)
+write.csv(p.FDR, file = "abaca_Fisher_FDR.csv", col.names = T, row.names=x[,1], sep = "\t")
+
+
