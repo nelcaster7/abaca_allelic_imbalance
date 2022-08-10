@@ -9,8 +9,7 @@ column.species.name = c("BC2_Abuab", "BC2_Pacol")
 #############################
 # binomial test with FDR
 #############################
-#p.val=0.05
-#assign("p.val", 0.05)
+
 binom.pval = apply(count.matrix, 1, function(x){binom.test(x,p=0.5)$p.val})
 binom.fdr = p.adjust(binom.pval, method="fdr")
 write.table(data.frame(Name=gene.name, BinomTestPval=binom.pval, BinomTestFDR=binom.fdr),
