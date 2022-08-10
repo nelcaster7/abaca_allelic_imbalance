@@ -9,12 +9,12 @@ column.species.name = c("BC2_Abuab", "BC2_Pacol")
 #############################
 # binomial test with FDR
 #############################
-#p.val=0.875
-#assign("p.val", 0.875)
-binom.pval = apply(count.matrix, 1, function(x){binom.test(x,p=0.875)$p.val})
+#p.val=0.05
+#assign("p.val", 0.05)
+binom.pval = apply(count.matrix, 1, function(x){binom.test(x,p=0.5)$p.val})
 binom.fdr = p.adjust(binom.pval, method="fdr")
 write.table(data.frame(Name=gene.name, BinomTestPval=binom.pval, BinomTestFDR=binom.fdr),
-            file="BinomTestResult_BC2_p_0.875.csv",sep=",",col.names=TRUE,row.names=FALSE,quote=FALSE)
+            file="BinomTestResult.csv",sep=",",col.names=TRUE,row.names=FALSE,quote=FALSE)
    
 #############################
 # Fisher exact test with FDR
